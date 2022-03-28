@@ -1,0 +1,43 @@
+{
+  "service": "serverless-node-api-aws",
+  "frameworkVersion": "3",
+
+  "provider": {"name": "aws", "runtime": "nodejs14.x"},
+
+  "functions": {
+    "hello": {
+      "handler": "src/hello.hello",
+      "events": [
+        {
+          "httpApi": "GET /hello"
+        }
+      ]
+    }
+  },
+  "resources": {
+    "Resources": {
+      "usersTable": {
+        "Type": "AWS::DynamoDB::Table",
+        "Properties": {
+          "TableName": "usersTable",
+          "AttributeDefinitions": [
+            {
+              "AttributeName": "id",
+              "AttributeType": "S"
+            }
+          ],
+          "KeySchema": [
+            {
+              "AttributeName": "id",
+              "KeyType": "HASH"
+            }
+          ],
+          "ProvisionedThroughput": {
+            "ReadCapacityUnits": 1,
+            "WriteCapacityUnits": 1
+          }
+        }
+      }
+    }
+  }
+}
