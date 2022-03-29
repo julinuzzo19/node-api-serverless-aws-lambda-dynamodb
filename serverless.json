@@ -2,14 +2,37 @@
   "service": "serverless-node-api-aws",
   "frameworkVersion": "3",
 
-  "provider": {"name": "aws", "runtime": "nodejs14.x"},
+  "provider": {
+    "name": "aws",
+    "runtime": "nodejs14.x",
+    "region": "us-east-1",
+    "iam": {
+      "role": {
+        "statements": [
+          {
+            "Effect": "Allow",
+            "Action": ["dynamodb:*"],
+            "Resource": "arn:aws:dynamodb:us-east-1:706600476815:table/usersTable"
+          }
+        ]
+      }
+    }
+  },
 
   "functions": {
-    "hello": {
-      "handler": "src/hello.hello",
+    "createUser": {
+      "handler": "src/createUser.main",
       "events": [
         {
-          "httpApi": "GET /hello"
+          "httpApi": "POST /users"
+        }
+      ]
+    },
+    "getUsers": {
+      "handler": "src/getUsers.main",
+      "events": [
+        {
+          "httpApi": "GET /users"
         }
       ]
     }
