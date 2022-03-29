@@ -2,26 +2,17 @@ const AWS = require('aws-sdk');
 
 const dynamoDB = new AWS.DynamoDB.DocumentClient();
 
-module.exports.main = (event, context, callback) => {
-  dynamoDB.scan(
-    {
-      TableName: 'usersTable'
-    },
-    (err, result) => {
-      if (err) {
-        console.error(err);
-        callback(null, {
-          statusCode: err.statusCode || 501,
-          headers: {'Content-Type': 'text/plain'},
-          body: 'cant get users'
-        });
-        return;
-      } else {
-        callback(null, {
-          statusCode: 200,
-          body: JSON.stringify(result.Items)
-        });
-      }
-    }
-  );
+module.exports.main = async () => {
+  try {
+    const result = await dynamoDB.scan({TableName: 'usersTable'}).promise();
+    return {
+      statusCode: 200,
+      body: JSON.stringify(result.Items)
+    };
+  } catch (error) {
+    return {
+      statusCode: 500,
+      message: error
+    };
+  }
 };
