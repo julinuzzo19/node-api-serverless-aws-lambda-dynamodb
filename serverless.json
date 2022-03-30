@@ -13,6 +13,11 @@
             "Effect": "Allow",
             "Action": ["dynamodb:*"],
             "Resource": "arn:aws:dynamodb:us-east-1:706600476815:table/usersTable"
+          },
+          {
+            "Effect": "Allow",
+            "Action": ["s3:*"],
+            "Resource": "arn:aws:s3:::aws-bucket-serverless-node-example"
           }
         ]
       }
@@ -33,6 +38,38 @@
       "events": [
         {
           "httpApi": "GET /users"
+        }
+      ]
+    },
+    "getUserById": {
+      "handler": "src/getUserById.main",
+      "events": [
+        {
+          "httpApi": "GET /users/{id}"
+        }
+      ]
+    },
+    "deleteUser": {
+      "handler": "src/deleteUser.main",
+      "events": [
+        {
+          "httpApi": "DELETE /users/{id}"
+        }
+      ]
+    },
+    "updateUser": {
+      "handler": "src/updateUser.main",
+      "events": [
+        {
+          "httpApi": "PUT /users/{id}"
+        }
+      ]
+    },
+    "uploadImage": {
+      "handler": "src/uploadImage.main",
+      "events": [
+        {
+          "httpApi": "POST /users/{id}/image"
         }
       ]
     }
